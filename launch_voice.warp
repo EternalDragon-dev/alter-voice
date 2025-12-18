@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# launch_voice.warp - Warp flow to setup and run the realtime voice mod prototype
+set -euo pipefail
+
+# 0) optional: show a small banner
+echo "=== Omega Voice Modulator - Warp launcher ==="
+
+# 1) ensure we're in the project directory
+PROJECT_DIR="${PWD}"
+
+# 2) create & activate venv
+python3 -m venv .venv || true
+# shellcheck disable=SC1091
+source .venv/bin/activate
+
+# 3) install system deps (macOS recommendation for higher-quality pitch shifting)
+echo "If you haven't installed the Rubber Band library, install it now (macOS):"
+echo "  brew install rubberband"
+echo "If on Linux, use your package manager (e.g., apt install rubberband-cli librubberband2)."
+echo "If on Windows, consider WSL or look for prebuilt rubberband binaries; otherwise use the naive fallback."
+
+# 4) install python deps
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# 5) Quick note for routing
+echo
+echo "Routing note:"
+echo " macOS: install BlackHole (https://github.com/ExistentialAudio/BlackHole) to route mic -> app -> virtual device."
+echo " Windows: use VB-Cable or Voicemeeter."
+echo
+
+# 6) Start realtime app in a background pane and tail logs
+echo "🚀 Starting realtime voice mod (realtime_pitch_rubberband.py)..."
+# Run in background and log
+nohup python realtime_pitch_rubberband.py > voice_mod.log 2>&1 &
+
+sleep 1
+echo "Opening log (Ctrl+C to stop viewing but the server remains running)..."
+tail -f voice_mod.log
