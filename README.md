@@ -1,11 +1,11 @@
-# Omega Voice Modulator
+# Alter Voice Modulator
 
 A real-time voice modulator with robotic effects and pitch shifting, optimized for low latency and high quality. Built for live voice applications with interactive controls.
 
 ## Project Structure
 
 ```
-omega-voice/
+alter-voice/
 ├── voice_mod_low_latency.py      # Ultra-low latency version (~13ms)
 ├── voice_mod_high_quality.py     # High quality version (~50ms)
 ├── voice_mod_separate_devices.py # Separate input/output devices
